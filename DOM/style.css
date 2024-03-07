@@ -1,0 +1,79 @@
+
+        body {
+            font-family: Helvetica;
+            font-size: 1rem;    
+            background-color: #9fa8bd;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            width: 40%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            margin: 150px auto 0; 
+            gap: 1rem;
+            border: 5px solid  #000000;
+            }
+
+        .child-container  {
+            display: flex;
+            align-items: center; 
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.3rem;
+        }
+
+        .todo-item {
+            display: block;
+        }
+
+        .todo-input {
+            border: 2px solid #000;
+            padding: 15px;
+            margin-right: 10px;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .delete-task {
+            background-color: #ff3131;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .add-task {
+            background-color: #22bb00;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .upward {
+            background-color: #df05c2;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .falling {
+            background-color: #9c38ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de memoria</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <h1>Recuerda la secuencia</h1>
+        <div class="box" id="box1">1</div>
+        <div class="box" id="box2">2</div>
+        <div class="box" id="box3">3</div>
+        <div class="box" id="box4">4</div>
+
+        <h3 id="sequence"></h3>
+        <br>
+        <button onclick="showSequence()">Jugar</button>
+    </div>
+
+    <script>
+        // Generar secuencia aleatoria de 4 elementos, que corresponden al indice de las cajas
+        let sequence = shuffleArray([1, 2, 3, 4]);
+
+        // Controla el indice de la caja seleccionada
+        let currentIndex = 0;
+
+        // Controla si el juego esta en marcha
+        let isPlaying = false;
+
+        // Muestra la secuencia durante 1 segundo y la oculta
+        function showSequence() {
+            // Cuando se pulse el boton, el juego comienza
+            isPlaying = true;
+            const sequenceElement = document.getElementById('sequence');
+
+            sequenceElement.innerHTML = "La secuencia es: " + sequence.join(', '); 
+            setTimeout(() => {
+                sequenceElement.innerHTML = ""; // limpia el contenido del elemento que muestra la secuencia.
+            }, 1000)
+        }
+
+        // Baraja la secuencia
+        function shuffleArray(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        // Aplica los efectos de hover y click
+        $(document).ready(function () {
+            // Hover sobre las cajas, cambia el color de fondo
+            $(".box").hover(function () {
+                $(this).css("background-color", "darkblue");
+            }, function () {
+                $(this).css("background-color", "#007bff");
+            });
+
+            // Click sobre las cajas, realiza un fadeIn y un fadeOut
+            $(".box").click(function () {
+                // Solo se realiza si el juego esta en marcha
+                if (isPlaying) {
+                    const boxId = $(this).attr('id').replace('box', '');
+                    $(this).fadeOut(200).fadeIn(200);
+                    // Comprueba si la caja seleccionada es correcta
+                    checkClick(boxId);
+                }
+            });
+
+            // Comprueba si la caja seleccionada es correcta dentro de la secuencia
+            function checkClick(boxId) {
+                // Si la caja seleccionada es la de la secuencia
+                if (parseInt(boxId) === sequence[currentIndex]) {
+                    // Incrementa el indice
+                    currentIndex++;
+                    // Si el indice es la longitud de la secuencia, gana
+                    if (currentIndex === sequence.length) {
+                        alert("Enhorabuena, has ganado.");
+
+                        // Si el usuario gana, el juego se detiene
+                        isPlaying = false;
+
+                        // Se resetea el indice y se barajan las cajas
+                        currentIndex = 0;
+                        sequence = shuffleArray(sequence);
+                    }
+                } else { // Si la caja seleccionada no es la de la secuencia, pierde
+                    alert("Ups, caja incorrecta. Has perdido.");
+
+                    // Se resetea el indice y se vuelve a mostrar la secuencia
+                    currentIndex = 0;
+                    showSequence();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

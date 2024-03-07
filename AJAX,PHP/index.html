@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        // Espera a que el documento HTML esté completamente cargado
+        document.addEventListener('DOMContentLoaded', () => {
+            // Agrega un event listener al formulario con el ID 'registroForm' que escucha el evento de envío del formulario
+            document.getElementById('registroForm').addEventListener('submit', (event) => {
+                // Evitar el envío del formulario por defecto
+                event.preventDefault();
+
+                // Obtiene una referencia al formulario que desencadenó el evento de envío
+                const form = event.currentTarget;
+
+                // Verificar si el formulario es válido
+                if (form.checkValidity()) {
+                    // Recopilar datos del formulario
+                    const formData = new FormData(form); 
+
+                    // Crear una nueva instancia de XMLHttpRequest para realizar una solicitud AJAX
+                    const peticion = new XMLHttpRequest();
+
+                    // URL del archivo PHP que maneja la solicitud y los datos del formulario
+                    const url = 'datos.php'; 
+
+                    // Abrir la petición HTTP asíncrona, de tipo POST, en la URL indicada
+                    peticion.open('POST', url, true);
+
+                
+                    // Se crea un manejador de eventos para la respuesta de la solicitud AJAX
+                    // que se dispara cuando la petición cambia de estado
+                    peticion.onreadystatechange = () => {
+                        // Verificar si la solicitud se ha completado
+                        if (peticion.readyState === XMLHttpRequest.DONE) {
+                            // Verificar si la solicitud fue exitosa (estado HTTP 200)
+                            if (peticion.status === 200) {
+                                // Analizar la respuesta JSON del servidor
+                                const response = JSON.parse(peticion.responseText);
+                                // Construir el mensaje de bienvenida
+                                const message = response.message;
+                                const userDetails = response.userDetails;
+
+                                // Ocultar el formulario
+                                document.getElementById('formContainer').style.display = 'none';
+                                // Mostrar el contenedor de bienvenida y los detalles del usuario
+                                document.querySelector('.centralContainer').style.display = 'block';
+                                document.getElementById('welcomeMessage').textContent = message;
+                                document.getElementById('userDetails').textContent = userDetails;
+                            } else {
+                                // Mostrar un mensaje de error en la consola si la solicitud no fue exitosa
+                                console.error('Error en la solicitud: ' + peticion.status);
+                            }
+                        }
+                    };
+                    // Enviar la solicitud AJAX con los datos del formulario
+                    peticion.send(formData);
+                } else {
+                    // Mostrar un mensaje de alerta si el formulario no es válido
+                    alert("Por favor, complete correctamente todos los campos del formulario.");
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <!-- Formulario de registro de usuario -->
+    <div id="formContainer">
+        <h2>Registro de Usuario</h2>
+        <form id="registroForm">
+            <!-- Campo de entrada para el nombre -->
+            <label for="nombre">Nombre:</label>
+            <input type="text" name="nombre" maxlength="15" pattern="[A-Za-z ]{2,15}"
+                title="Introduce entre 2 y 15 letras" placeholder="Nombre" required><br><br>
+
+            <!-- Campo de entrada para el apellido -->
+            <label for="apellido">Apellido:</label>
+            <input type="text" name="apellido" maxlength="20" pattern="[A-Za-z ]{2,20}"
+                title="Introduce entre 2 y 20 letras" placeholder="Apellido" required><br><br>
+
+            <!-- Campo de entrada para la dirección -->
+            <label for="direccion">Dirección:</label>
+            <input type="text" name="direccion" placeholder="Dirección" required><br><br>
+
+            <!-- Campo de entrada para el teléfono -->
+            <label for="telefono">Teléfono:</label>
+            <input type="text" name="telefono" pattern="[0-9]{9}" title="Número de 9 cifras"
+                placeholder="Teléfono" required><br><br>
+
+            <!-- Campo de entrada para el correo electrónico -->
+            <label for="correo">Correo Electrónico:</label>
+            <input type="email" name="correo" placeholder="Correo electrónico" required><br><br>
+
+            <!-- Botón de envío del formulario -->
+            <input type="submit" value="Enviar">
+        </form>
+    </div>
+
+    <!-- Contenedor para mostrar el mensaje de bienvenida y los detalles del usuario -->
+    <div class="centralContainer">
+        <div class="welcome">
+            <h2>Bienvenido</h2>
+            <div id="welcomeMessage"></div>
+            <div id="userDetails"></div>
+        </div>
+    </div>
+</body>
+
+</html>

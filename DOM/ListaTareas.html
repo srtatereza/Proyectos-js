@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tareas</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <!--Contenedor central-->
+    <div class="container">
+        <h1>Lista de Tareas</h1>
+        <div>
+            <button class="add-task" onclick="createTask()">Agregar Tarea</button>
+            <button class="delete-task" onclick="clearTasks()">Eliminar Tareas</button>
+        </div>
+
+        <!-- Contenedor para mostrar la lista de tareas -->
+        <div>
+            <ul id="tasks"></ul>
+        </div>
+
+        <h2>Ordenar Tareas Por orden alfabetico</h2>
+        <div class="child-container">
+            <button class="upward" onclick="sortByTitle('asc')">Ordenar Tareas de Forma Ascendente</button>
+            <button class="falling" onclick="sortByTitle()">Ordenar Tareas de Forma Descendente</button>
+        </div>
+    </div>
+
+    <script>
+        // Función para ordenar las tareas por orden alfabetico
+        const sortByTitle = (order) => {
+            // Obtiene la lista de tareas del HTML
+            const tasks = document.getElementById("tasks");
+
+            // Convierte la lista de tareas en un array
+            // Luego ordena el array usando el metodo sort, comparando el valor de cada elemento
+            const taskList = Array.from(tasks.children).sort((a, b) => {
+                // Si el orden es ascendente, compara el valor de la primera etiqueta con el valor de la segunda
+                if (order === "asc") {
+                    return a.children[0].value.localeCompare(b.children[0].value);
+                } else { // Si no, compara el valor de la segunda etiqueta con el valor de la primera
+                    return b.children[0].value.localeCompare(a.children[0].value);
+                }
+            });
+            // Limpia la lista de tareas
+            tasks.innerHTML = "";
+            // Agrega la lista de tareas ordenada al HTML
+            taskList.forEach(task => tasks.appendChild(task));
+        }
+
+        // Función para borrar una tarea
+        const removeTask = (e) => {
+            // Obtiene la lista de tareas del HTML
+            const tasks = document.getElementById("tasks");
+            // Obtiene la tarea que se va a borrar
+            const task = e.currentTarget.parentNode;
+            // Elimina la tarea de la lista
+            tasks.removeChild(task);
+        }
+
+        // Función para borrar todas las tareas
+        const clearTasks = () => {
+            // Obtiene la lista de tareas del HTML
+            const tasks = document.getElementById("tasks");
+            // Limpia la lista de tareas
+            tasks.innerHTML = "";
+        }
+
+        // Función para agregar una nueva tarea
+        const createTask = () => {
+            // Obtiene la lista de tareas del HTML
+            const tasks = document.getElementById("tasks");
+
+            // Crea una nueva tarea
+            const task = document.createElement("li");
+            task.classList.add("todo-item");
+
+            // Crea un input para la nueva tarea
+            const input = document.createElement("input");
+            input.classList.add("todo-input");
+            input.type = "text";
+            task.appendChild(input);
+
+            // Crea un boton para borrar la tarea
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Quitar Tarea";
+            deleteButton.classList.add("delete-task");
+            deleteButton.onclick = removeTask;
+            task.appendChild(deleteButton);
+
+            // Agrega la nueva tarea a la lista
+            tasks.appendChild(task);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temporizador</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+
+    <h1>Temporizador para tus Rutinas de Ejercicios</h1>
+
+    <div id="timer">00:00:00:00</div>
+
+    <div class="buttonContainer">
+      <!-- &#9658 simbolo de HTML  -->
+      <button id="start" onclick="start()">Iniciar &#9658</button>
+      <button id="stop" onclick="stop()" disabled>Pausar &#x23F8</button>
+      <button id="reset" onclick="reset()" disabled>Reiniciar &#8634</button>
+      <button id="finish" onclick="finish()" disabled>Finalizar &#10003</button>
+    </div>
+  </div>
+
+  <script>
+    // Almacena el tiempo de inicio del temporizador
+    let startTime;
+
+    // Almacena el intervalo del temporizador
+    let interval;
+
+    // Almacena el tiempo transcurrido
+    let elapsedTime = 0;
+
+    // Indica si el temporizador está en ejecución o detenido
+    let running = false;
+
+    // Se muestra un mensaje al segundo con un alert
+    setTimeout(() => {
+      alert("Bienvenido, a tu temporizador! Para comenzar, presiona el botón Iniciar.");
+    }, 1000)
+
+    // Función para iniciar el temporizador
+    const start = () => {
+      // Si el temporizador no está en ejecución
+      if (!running) {
+        // Establece el tiempo de inicio como el tiempo actual menos el tiempo transcurrido
+        startTime = Date.now() - elapsedTime;
+        // Inicia el intervalo del temporizador, actualizándolo cada 10 milisegundos
+        interval = setInterval(updateTimer, 10);
+        // Marca el temporizador como en ejecución
+        running = true;
+        // Habilitado de los botones
+        document.getElementById("start").disabled = true;
+        document.getElementById("stop").disabled = false;
+        document.getElementById("reset").disabled = true;
+        document.getElementById("finish").disabled = true;
+      }
+    }
+
+    const stop = () => {
+      // Si el temporizador está en ejecución
+      if (running) {
+        // Detiene el intervalo
+        clearInterval(interval);
+        // Marca el temporizador como detenido
+        running = false;
+        // Habilitado de los botones
+        document.getElementById("start").disabled = false;
+        document.getElementById("stop").disabled = true;
+        document.getElementById("reset").disabled = false;
+        document.getElementById("finish").disabled = false;
+      }
+    }
+
+    const reset = () => {
+      // Detiene el intervalo
+      clearInterval(interval);
+      // Resetea el tiempo transcurrido
+      resetTimer();
+      // Habilitado de los botones
+      document.getElementById("start").disabled = false;
+      document.getElementById("stop").disabled = true;
+      document.getElementById("reset").disabled = true;
+      document.getElementById("finish").disabled = true;
+    }
+
+    const finish = () => {
+      // Obtiene el tiempo transcurrido y lo muestra en un alert
+      const time = document.getElementById("timer").innerHTML;
+      alert(`Has finalizado tu ejercicio en ${time}`);
+    }
+
+    const setTimer = (time) => {
+      // Convierte el tiempo en horas, minutos, segundos y milisegundos
+      let milliseconds = Math.floor((time % 1000) / 10);
+      let seconds = Math.floor((time / 1000) % 60);
+      let minutes = Math.floor((time / (1000 * 60)) % 60);
+      let hours = Math.floor(time / (1000 * 60 * 60));
+
+      // Formatea el tiempo como HH:MM:SS:MS y lo muestra en el elemento HTML
+      const timer = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds) + ":" + padMs(milliseconds);
+      document.getElementById("timer").textContent = timer
+    }
+
+    // Función para actualizar el tiempo transcurrido
+    const updateTimer = () => {
+      // Obtiene el tiempo actual
+      let currentTime = Date.now();
+      // Lo resta al tiempo de inicio
+      elapsedTime = currentTime - startTime;
+      // Actualiza el tiempo transcurrido en el HTML
+      setTimer(elapsedTime);
+    }
+
+    // Función para reiniciar el temporizador
+    const resetTimer = () => {
+      // Detiene el intervalo
+      clearInterval(interval);
+      // Resetea el tiempo transcurrido
+      elapsedTime = 0;
+      // Actualiza el tiempo transcurrido en el HTML
+      setTimer(0);
+      // Marca el temporizador como detenido
+      running = false;
+    }
+
+    // Función para formatear el tiempo, con dos cifras
+    function pad(num) {
+      return num.toString().padStart(2, "0");
+    }
+
+    // Función para formatear el tiempo de los milisegundos, con dos cifras
+    function padMs(num) {
+      return num.toString().padStart(2, "0").slice(0, 2);
+    }
+  </script>
+</body>
+
+</html>

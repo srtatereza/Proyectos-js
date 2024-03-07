@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Series</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Busquedor de Series</h1>
+        <p>Por favor, introduzca el nombre de una serie para obtener su resumen (en inglés) y su calificación.</p>
+        <input type="text" name="search" id="input">
+        <button id="submit" onclick="performSearch()">Buscar</button>
+        <div id="show"></div>
+    </div>
+
+    <script>
+        // Realiza la búsqueda de una serie y muestra sus datos en la página
+        const performSearch = () => {
+            // Obtiene el nombre de la serie que ha sido introducido
+            const input = document.getElementById('input').value;
+
+            // Mostramos un mensaje de espera mientras se realiza la búsqueda
+            const show = document.getElementById("show")
+            show.innerHTML = "<br>Cargando..."
+
+            // Realiza la búsqueda usando fetch, mediante una petición GET
+            fetch(`https://api.tvmaze.com/search/shows?q=${input}`)
+                .then(response => response.json()) // Convierte la respuesta a formato JSON
+                .then(data => {
+                    // Obtiene los datos de la serie
+                    const show = data[0].show;
+                    // Limpia el elemento HTML de la serie
+                    cleanShowElem()
+                    // Crea el elemento HTML de la serie
+                    createShowElem(show)
+                }).catch(error => onError(error));
+        }
+
+        // Maneja los errores
+        const onError = (error) => {
+            // Mostrar detalle del error por consola
+            console.error(error);
+
+            // Limpia el elemento HTML de la serie
+            cleanShowElem()
+
+            // Muestra un error por pantalla
+            const movieElem = document.getElementById("show")
+            movieElem.innerHTML = "<br> Ha ocurrido un problema al realizar la búsqueda"
+        }
+
+        // Limpia el elemento HTML de la serie
+        const cleanShowElem = () => {
+            const movieElem = document.getElementById("show")
+            movieElem.innerHTML = ""
+        }
+
+        // Crea el elemento HTML de la serie
+        const createShowElem = (show) => {
+            // Crea el elemento HTML para mostrar el nombre de la serie
+            const name = document.createElement("h2")
+            name.innerHTML = show.name;
+
+            // Crea el elemento HTML para mostrar la calificación de la serie
+            const rating = document.createElement("h4")
+            rating.innerHTML = "Calificación: " + show.rating.average;
+
+            // Crea el elemento HTML para mostrar la sinopsis de la serie
+            const summary = document.createElement("div")
+            summary.innerHTML = show.summary;
+
+            // Añade el elemento HTML de la serie a la página
+            const showElem = document.getElementById("show")
+            showElem.appendChild(name);
+            showElem.appendChild(rating);
+            showElem.appendChild(summary);
+        }
+    </script>
+</body>
+
+</html>

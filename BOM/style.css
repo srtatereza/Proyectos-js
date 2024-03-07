@@ -1,0 +1,61 @@
+body {
+    font-family: Helvetica;
+    font-size: 1.2rem;    
+    background-color: #404545;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    width: 40%;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 8px;
+    margin: 150px auto 0; 
+    }
+
+h1 {
+    text-align: center;
+    color: #000000;
+}
+#timer {
+        display: inline-block;
+        font-size: 2.5rem;
+        padding: 20px;
+        border: 2px solid #009500;
+        border-radius: 8px;
+        background-color: #f3f2f2;
+        margin-bottom: 30px;
+        font-family: Courier,sans-serif;
+        color: #363431;
+    }
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-around; /* Para que los botones estén espaciados uniformemente */
+    margin-top: 20px; 
+    gap: 1rem;
+}
+
+button {
+    padding: 10px 10px;
+    background-color: #00d80b; 
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: 0.6; /* Opacidad inicial */
+    font-size: 1.5rem;
+}
+
+button:hover {
+    opacity: 1; /* Opacidad al pasar el ratón */
+}
+
+button:active {
+    opacity: 1; /* Opacidad al hacer clic */
+}

@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2rem;
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+
+h1 {
+    margin-top: 130px;
+}
+
+.box {
+    width: 10%;
+    height: 150px;
+    background-color: dodgerblue;
+    margin: 20px;
+    display: inline-block;
+    text-align: center;
+    line-height: 120px;
+    color: white;
+    cursor: pointer;
+    font-size: 2rem;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 2rem;
+    background-color: #22bb00;
+    color: white;
+}
